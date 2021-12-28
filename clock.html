@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Saira&display=swap" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+
+    body {
+      background: radial-gradient(circle, #282828 50%, black 80%);
+      text-align: center;
+      font-size: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 1s;
+    }
+
+    #hour {
+      width: 100px;
+      z-index: 3;
+      right: 50%;
+      height: 6px;
+      background: #ffc219;
+      position: absolute;
+      border-radius: 6px;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+    }
+
+    #min {
+      height: 3px;
+      z-index: 10;
+      width: 150px;
+      right: 50%;
+      background: #274b6e;
+      position: absolute;
+      border-radius: 6px;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+    }
+
+    #sec {
+      z-index: 3;
+      position: absolute;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      height: 30px;
+      width: 200px;
+      right: 50%;
+    }
+
+    #sec::after {
+      content: '';
+      width: 30px;
+      height: 30px;
+      background: #ffa600;
+      position: absolute;
+      border-radius: 100%;
+      top: 0;
+      left: 0;
+      right: 50%;
+    }
+
+    .clock {
+      width: 500px;
+      height: 500px;
+      padding: 2rem;
+      border: 7px solid #282828;
+      box-shadow:
+        -4px -4px 10px rgba(67, 67, 67, 0.5),
+        inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+        inset -4px -4px 10px rgba(67, 67, 67, 0.5),
+        4px 4px 10px rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+    }
+
+    .outer-clock {
+      position: relative;
+      background: #282828;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+    }
+
+    .outer-clock::after {
+      transform: rotate(90deg)
+    }
+
+    .outer-clock::after,
+    .outer-clock::before,
+    .outer-clock .marking {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 100%;
+      background: #ff246d;
+      z-index: 0;
+      left: 50%;
+    }
+
+    .outer-clock .marking {
+      background: #ff9ec8;
+      width: 5px;
+    }
+
+    .outer-clock .marking.line1 {
+      transform: rotate(30deg)
+    }
+
+    .outer-clock .marking.line2 {
+      transform: rotate(60deg)
+    }
+
+    .outer-clock .marking.line3 {
+      transform: rotate(120deg)
+    }
+
+    .outer-clock .marking.line4 {
+      transform: rotate(150deg)
+    }
+
+    .inner-clock {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      width: 90%;
+      height: 90%;
+      background: #282828;
+      -webkit-border-radius: 100%;
+      -moz-border-radius: 100%;
+      border-radius: 100%;
+      z-index: 1;
+    }
+
+    #date {
+      font-size: 80px;
+      color: #282828;
+      filter: drop-shadow(2px 2px 3px #4e3c4c);
+      position: absolute;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      font-family: 'Orbitron', sans-serif;
+      bottom: 80px;
+      transition: 1s;
+    }
+
+    #date:hover {
+      filter: drop-shadow(2px 2px 3px #3c484e);
+    }
+
+    .smile {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid #282828;
+      z-index: 9;
+      left: 2px;
+      bottom: -2px;
+    }
+
+    .gif {
+      background: url(./978555515ea12c396159a69390d484cb.gif)no-repeat center center/cover;
+      width: 120px;
+      height: 120px;
+      position: absolute;
+      z-index: 999;
+      left: 0;
+      bottom: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="clock" class="clock">
+    <div class="outer-clock">
+      <div class="inner-clock"> </div>
+      <div class="marking line1"></div>
+      <div class="marking line2"></div>
+      <div class="marking line3"></div>
+      <div class="marking line4"></div>
+    </div>
+  </div>
+  <div id="hour"></div>
+  <div id="min"></div>
+  <div id="sec">
+    <div class="smile"></div>
+  </div>
+  <div id="date"></div>
+  <div class="gif"></div>
+  <script>
+    const hour = document.getElementById('hour')
+    const min = document.getElementById('min')
+    const sec = document.getElementById('sec')
+    const date = document.getElementById("date");
+    function updateDate() {
+      let newDate = new Date();
+      let year = newDate.getFullYear();
+      let month = newDate.getMonth() + 1;
+      let days = newDate.getDate();
+      let hour = newDate.getHours();
+      let mins = newDate.getMinutes();
+      let sec = newDate.getSeconds();
+      let clockJSRead = `${year} / ${month} / ${days} ${hour}:${mins}:${sec}`;
+      date.textContent = clockJSRead;
+    }
+    setInterval(updateDate, 1000);
+    updateDate();
+    setInterval(() => {
+      const now = new Date()
+      hour.style.transform = `rotate(${30 * now.getHours() + 90}deg)`
+      hour.style.filter = `hue-rotate(${6 * now.getSeconds()}deg)`
+      min.style.transform = `rotate(${6 * now.getMinutes() + 90}deg)`
+      min.style.filter = `hue-rotate(${6 * now.getSeconds()}deg)`
+      sec.style.transform = `rotate(${6 * now.getSeconds() + 90}deg)`
+      sec.style.filter = `hue-rotate(${6 * now.getSeconds()}deg)`
+    }, 1000)
+  </script>
+</body>
+
+</html>
